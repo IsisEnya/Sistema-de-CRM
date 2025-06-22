@@ -16,7 +16,7 @@ O banco utilizado foi o PostgreSQL, o qual possui o script nas pastas das primei
 se tudo estiver rodando, o projeto deve se parecer com isto:
 
 
-![image](https://github.com/user-attachments/assets/7422f011-4f01-4ea1-8af8-6ac805257020)
+![ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/e80b5202-268d-4592-8e92-50411d916381)
 
 
 
