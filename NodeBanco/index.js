@@ -1,7 +1,9 @@
 const express = require('express');
+const cors = require('cors');  // importar cors
 const app = express();
 require('dotenv').config();
 
+app.use(cors());             // liberar CORS para todas as origens
 app.use(express.json());
 
 const produtosRouter = require('./src/routes/produtos'); // se quiser manter
