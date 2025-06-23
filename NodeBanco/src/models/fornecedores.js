@@ -1,52 +1,33 @@
-const express = require('express');
-const router = express.Router();
-const fornecedores = require('../models/fornecedores');
+const db = require('../db');  // Altere conforme sua configuração de conexão com o banco
 
-// GET /fornecedores
-router.get('/', async (req, res) => {
-  const data = await fornecedores.getAll();
-  res.json(data);
-});
+module.exports = {
+  async getAll() {
+    const result = await db.query('SELECT * FROM fornecedores');
+    return result.rows;
+  },
 
-// GET /fornecedores/:id
-router.get('/:id', async (req, res) => {
-  const data = await fornecedores.getById(req.params.id);
+  async getById(id) {
+    const result = await db.query('SELECT * FROM fornecedores WHERE id = $1', [id]);
+    return result.rows[0];
+  },
 
-  if (!data) {
-    return res.status(404).json({ erro: 'Fornecedor não encontrado' });
-  } 
-  res.json(data);
-});
+  async create(fornecedor) {
+    const result = await db.query(
+      'INSERT INTO fornecedores (nome, contato) VALUES ($1, $2) RETURNING *',
+      [fornecedor.nome, fornecedor.contato]
+    );
+    return result.rows[0];
+  },
 
-// POST /fornecedores
-router.post('/', async (req, res) => {
-  try {
-    const novo = await fornecedores.create(req.body);
-    res.status(201).json(novo);
-  } catch (err) {
-    res.status(400).json({ erro: 'Erro ao criar fornecedor', detalhes: err.message });
+  async update(id, fornecedor) {
+    const result = await db.query(
+      'UPDATE fornecedores SET nome = $1, contato = $2 WHERE id = $3 RETURNING *',
+      [fornecedor.nome, fornecedor.contato, id]
+    );
+    return result.rows[0];
+  },
+
+  async remove(id) {
+    await db.query('DELETE FROM fornecedores WHERE id = $1', [id]);
   }
-});
-
-// PUT /fornecedores/:id
-router.put('/:id', async (req, res) => {
-  try {
-    const atualizado = await fornecedores.update(req.params.id, req.body);
-    if (!atualizado) return res.status(404).json({ erro: 'Fornecedor não encontrado' });
-    res.json(atualizado);
-  } catch (err) {
-    res.status(400).json({ erro: 'Erro ao atualizar fornecedor', detalhes: err.message });
-  }
-});
-
-// DELETE /fornecedores/:id
-router.delete('/:id', async (req, res) => {
-  try {
-    await fornecedores.remove(req.params.id);
-    res.status(204).send();
-  } catch (err) {
-    res.status(400).json({ erro: 'Erro ao excluir fornecedor', detalhes: err.message });
-  }
-});
-
-module.exports = router;
+};

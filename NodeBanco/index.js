@@ -9,10 +9,12 @@ app.use(express.json());
 const produtosRouter = require('./src/routes/produtos'); // se quiser manter
 const relatoriosRouter = require('./src/routes/relatorios');
 const viewsRouter = require('./src/routes/views');
+const fornecedorRouter = require('./src/routes/fornecedores')
 
 app.use('/produtos', produtosRouter);
 app.use('/relatorios', relatoriosRouter);
 app.use('/views', viewsRouter);
+app.use('/fornecedores', fornecedorRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
