@@ -9,7 +9,7 @@ const pool = new Pool({
   database: process.env.DB_DATABASE
 });
 
-// Opcional: Log pra garantir que as env vars estão vindo certas
+//Log pra garantir que as env vars estão vindo certas
 console.log({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
