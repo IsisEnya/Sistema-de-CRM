@@ -14,7 +14,7 @@ const produtoEmPromocao = async (idProduto) => {
 
 // Chama a PROCEDURE: registrar_saida
 const registrarSaida = async (idProduto, quantidade, obs) => {
-  await db.query('SELECT registrar_saida($1, $2, $3)', [idProduto, quantidade, obs]);
+  await db.query('CALL registrar_saida($1, $2, $3)', [idProduto, quantidade, obs]);
 };
 
 module.exports = {
