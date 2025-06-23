@@ -1,4 +1,6 @@
 const apiBase = 'http://localhost:3000/produtos';
+const apiFornecedores = 'http://localhost:3000/fornecedores';
+
 
 const form = document.getElementById('produto-form');
 const idInput = document.getElementById('produto-id');
@@ -10,6 +12,28 @@ const fornecedorInput = document.getElementById('id_fornecedor');
 const tipoInput = document.getElementById('id_tipo_produto');
 const tabela = document.getElementById('tabela-produtos');
 const formTitle = document.getElementById('form-title');
+
+
+
+async function carregarFornecedoresSelect() {
+    const select = document.getElementById('id_fornecedor');
+    select.innerHTML = '<option value="">Selecione um fornecedor</option>';
+
+    try {
+        const res = await fetch(apiFornecedores);
+        const fornecedores = await res.json();
+
+        fornecedores.forEach(f => {
+            const option = document.createElement('option');
+            option.value = f.id;
+            option.textContent = `${f.id} - ${f.nome}`;
+            select.appendChild(option);
+        });
+    } catch (err) {
+        console.error('Erro ao carregar fornecedores:', err);
+    }
+}
+
 
 async function carregarProdutos() {
     const res = await fetch(apiBase);
@@ -81,6 +105,8 @@ function editarProduto(id, nome, descricao, preco, estoque, id_fornecedor, id_ti
     precoInput.value = preco;
     estoqueInput.value = estoque;
     fornecedorInput.value = id_fornecedor;
+
+;
     tipoInput.value = id_tipo_produto;
     formTitle.textContent = 'Editar Produto';
 }
@@ -99,4 +125,6 @@ function cancelarEdicao() {
     formTitle.textContent = 'Adicionar Produto';
 }
 
+
 carregarProdutos();
+carregarFornecedoresSelect();
